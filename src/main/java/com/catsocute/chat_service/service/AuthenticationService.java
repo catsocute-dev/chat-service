@@ -72,13 +72,13 @@ public class AuthenticationService {
 
         // Payload
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
+                .subject(user.getUserId())
                 .issuer("catsocute")
                 .issueTime(new Date())
                 .expirationTime(
                         Date.from(Instant.now().plus(1, ChronoUnit.HOURS)))
                 .jwtID(UUID.randomUUID().toString())
-                .claim("userId", user.getUserId())
+                .claim("username", user.getUsername())
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

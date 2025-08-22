@@ -22,7 +22,6 @@ import com.catsocute.chat_service.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -31,12 +30,13 @@ public class ConversationService {
     ConversationRepository conversationRepository;
     UserRepository userRepository;
 
-    @NonFinal
-    String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-
     // create conversation
     public ConversationResponse createConversation(ConversationRequest request) {
-        String participantId = request.getParticipantIds().getFirst();
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String participantId = request.getParticipantIds().stream()
+            .filter(userId -> !userId.equals(currentUserId))
+            .findFirst()
+            .orElse(null);
         List<String> userIds = new ArrayList<>();
         userIds.add(currentUserId);
         userIds.add(participantId);
@@ -82,6 +82,7 @@ public class ConversationService {
 
     // get my conversations
     public List<ConversationResponse> getConversations() {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         List<Conversation> conversations = conversationRepository.findAllByParticipantIdsContains(currentUserId);
         return conversations.stream()
             .map(conversation -> this.toConversationResponse(conversation)).toList();
@@ -89,7 +90,9 @@ public class ConversationService {
 
     //to conversation
     private ConversationResponse toConversationResponse(Conversation conversation) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         ConversationResponse conversationResponse = ConversationResponse.builder()
+            .conversationId(conversation.getConversationId())
             .type(conversation.getType())
             .participantsHash(conversation.getParticipantsHash())
             .participants(conversation.getParticipants())
@@ -98,7 +101,7 @@ public class ConversationService {
             .build();
         
         conversation.getParticipants().stream()
-            .filter(participantInfo -> participantInfo.getUserId().equals(currentUserId))
+            .filter(participantInfo -> !participantInfo.getUserId().equals(currentUserId))
             .findFirst().ifPresent(participantInfo -> {
                 conversationResponse.setConversationName(participantInfo.getFullname());
             });
