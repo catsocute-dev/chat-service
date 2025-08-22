@@ -21,7 +21,8 @@ public enum ErrorCode {
     USERNAME_NOT_EXISTED(1005, "Username not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-    ROLE_NOT_EXISTED(1008, "Role not existed", HttpStatus.NOT_FOUND)
+    ROLE_NOT_EXISTED(1008, "Role not existed", HttpStatus.NOT_FOUND),
+    GENERATION_ERROR(1009, "Error generating hash", HttpStatus.BAD_REQUEST)
 
     ;
 
