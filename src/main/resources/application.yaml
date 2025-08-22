@@ -1,0 +1,24 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /chat
+
+spring:
+  application:
+    name: chat-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/chat-service
+      auto-index-creation: true
+  datasource:
+    url: "jdbc:mysql://localhost:3307/chat-service"
+    username: root
+    password: "#Lenhat1605?"
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+security:
+  jwt:
+    signer-key: "RVKlpnBsR+8cxmOWpmNxzEjd4SXDahVTkYZjPtenyryiy+rNKu9yHKyy2CFzutUM"
+    

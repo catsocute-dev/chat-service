@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "spring.security.jwt.signer-key",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.security.jwt.signer-key'"
+  },
+  {
+    "name": "security.jwt.signer-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.signer-key'"
+  }
+]}
