@@ -22,7 +22,9 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     ROLE_NOT_EXISTED(1008, "Role not existed", HttpStatus.NOT_FOUND),
-    GENERATION_ERROR(1009, "Error generating hash", HttpStatus.BAD_REQUEST)
+    GENERATION_ERROR(1009, "Error generating hash", HttpStatus.BAD_REQUEST),
+    CONVERSATION_NOT_FOUND(1010, "Coversation not found", HttpStatus.NOT_FOUND),
+    NOT_PARTICIPANT(1011, "Not participant", HttpStatus.NOT_FOUND)
 
     ;
 
