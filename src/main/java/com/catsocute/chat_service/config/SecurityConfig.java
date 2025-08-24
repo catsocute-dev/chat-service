@@ -39,13 +39,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(
-                request -> request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT).permitAll()
+        httpSecurity.authorizeHttpRequests(request -> 
+                request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT).permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
-            .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-        );
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
         // disable csrf
         httpSecurity.csrf(httpSecurityCsrfconfigurer -> httpSecurityCsrfconfigurer.disable());
@@ -65,4 +64,5 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
