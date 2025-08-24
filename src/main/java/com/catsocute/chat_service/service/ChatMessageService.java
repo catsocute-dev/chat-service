@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import com.catsocute.chat_service.constant.SocketEvent;
 import com.catsocute.chat_service.dto.request.ChatMessageRequest;
 import com.catsocute.chat_service.dto.response.ChatMessageResponse;
 import com.catsocute.chat_service.entity.ChatMessage;
@@ -13,6 +15,7 @@ import com.catsocute.chat_service.exception.AppException;
 import com.catsocute.chat_service.exception.ErrorCode;
 import com.catsocute.chat_service.repository.ChatMessageRepository;
 import com.catsocute.chat_service.repository.ConversationRepository;
+import com.corundumstudio.socketio.SocketIOServer;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ public class ChatMessageService {
 
     ConversationRepository conversationRepository;
     ChatMessageRepository chatMessageRepository;
+    SocketIOServer socketIOServer;
 
     // create chat message
     public ChatMessageResponse create(ChatMessageRequest request) {
@@ -41,6 +45,13 @@ public class ChatMessageService {
 
         // create chat message
         chatMessage = chatMessageRepository.save(chatMessage);
+        String message = chatMessage.getMessage();
+
+        //Public socket IO to clients
+        socketIOServer.getAllClients().forEach(client -> {
+            client.sendEvent(SocketEvent.CHAT_MESSAGE, message);
+        });
+
         // convert to chatMessageResponse
         return toChatMessageResponse(chatMessage);
     }
