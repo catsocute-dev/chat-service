@@ -7,9 +7,20 @@ spring:
   application:
     name: chat-service
   data:
-    mongodb:
+    mongodb: 
       uri: mongodb://localhost:27017/chat-service
       auto-index-creation: true
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:12345678} 
+      timeout: 6000
+      lettuce:
+        pool:
+          max-active: 20     
+          max-idle: 10
+          min-idle: 2
+          time-between-eviction-runs: 10000
   datasource:
     url: "jdbc:mysql://localhost:3307/chat-service"
     username: root

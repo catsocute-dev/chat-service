@@ -129,7 +129,7 @@ public class ConversationService {
                 if (hex.length() == 1) {
                     hexString.append('0');
                 }
-                hexString.append(raw);
+                hexString.append(hex);
             }
 
             return hexString.toString();

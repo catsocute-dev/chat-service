@@ -24,7 +24,8 @@ public enum ErrorCode {
     ROLE_NOT_EXISTED(1008, "Role not existed", HttpStatus.NOT_FOUND),
     GENERATION_ERROR(1009, "Error generating hash", HttpStatus.BAD_REQUEST),
     CONVERSATION_NOT_FOUND(1010, "Coversation not found", HttpStatus.NOT_FOUND),
-    NOT_PARTICIPANT(1011, "Not participant", HttpStatus.NOT_FOUND)
+    NOT_PARTICIPANT(1011, "Not participant", HttpStatus.NOT_FOUND),
+    MISSING_TOKEN(1012, "Client missing token", HttpStatus.BAD_REQUEST)
     ;
 
     int code;

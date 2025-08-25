@@ -57,10 +57,10 @@ public class UserService {
     //get my info
     public User getMyInfo() {
         SecurityContext context = SecurityContextHolder.getContext();
-        String name = context.getAuthentication().getName(); //getName() -> jwt.getSubject
+        String userId = context.getAuthentication().getName(); //getName() -> jwt.getSubject
 
         //get current user
-        User user = userRepository.findByUsername(name)
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_EXISTED));
 
         return user;

@@ -2,6 +2,7 @@ package com.catsocute.chat_service.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class ConversationController {
             .build();
     }
 
-    @PostMapping("/my-conversation")
+    @GetMapping("/mine")
     ApiResponse<List<ConversationResponse>> getConversations() {
         return ApiResponse.<List<ConversationResponse>>builder()
             .result(conversationService.getConversations())

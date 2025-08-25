@@ -1,5 +1,6 @@
 package com.catsocute.chat_service.service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -11,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.catsocute.chat_service.dto.request.AuthenticationRequest;
+import com.catsocute.chat_service.dto.request.IntrospectRequest;
 import com.catsocute.chat_service.dto.response.AuthenticationResponse;
+import com.catsocute.chat_service.dto.response.IntrospectResponse;
 import com.catsocute.chat_service.exception.AppException;
 import com.catsocute.chat_service.exception.ErrorCode;
 import com.catsocute.chat_service.entity.User;
@@ -20,9 +23,12 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +57,7 @@ public class AuthenticationService {
         // match password
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
-        // check for unauthenticated
+        // check for unauthenticatedk;
         if (authenticated == false) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
@@ -63,6 +69,26 @@ public class AuthenticationService {
                 .authenticated(authenticated)
                 .token(token)
                 .build();
+    }
+
+    //verify token
+    public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException {
+        //get token from request
+        String token = request.getJwtToken();
+
+        //parse token
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        //get expiration time and verify
+        Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+        boolean expirationTimeValidated = expirationTime.after(new Date());
+        //verify signature
+        JWSVerifier jwsVerifier = new MACVerifier(SIGNER_KEY.getBytes());
+        boolean signatureValidated = signedJWT.verify(jwsVerifier);
+
+        return IntrospectResponse.builder()
+            .valid(signatureValidated && expirationTimeValidated)
+            .build();
     }
 
     // generate JWT token using nimbus library

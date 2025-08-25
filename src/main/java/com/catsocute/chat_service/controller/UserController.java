@@ -19,11 +19,13 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
     UserService userService;
 
@@ -58,6 +60,7 @@ public class UserController {
     @GetMapping("/myinfo")
     ApiResponse<User> getMyInfo() {
         User user = userService.getMyInfo();
+        log.info("Get info: ", user.getFullname());
         return ApiResponse.<User>builder()
             .result(user)
             .build();
