@@ -5,7 +5,7 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)](https://www.mysql.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-green.svg)](https://www.mongodb.com/)
 [![Redis](https://img.shields.io/badge/Redis-7.0+-red.svg)](https://redis.io/)
-[![Socket.IO](https://img.shields.io/badge/Socket.IO-2.0.13-yellow.svg)](https://socket.io/)
+[![Netty Socket.IO](https://img.shields.io/badge/NettySocket.IO-2.0.13-yellow.svg)]([https://socket.io/](https://github.com/mrniko/netty-socketio))
 ## 📋 Overview
 
 Chat Service is a real-time chat application built with Spring Boot, supporting instant communication between users through WebSocket and REST API. The application adopts a hybrid database architecture (MySQL + MongoDB) and uses Redis for session management.
